@@ -16,7 +16,7 @@ function StatsContainer() {
     }, [startTimer])
 
     function startTimer() {
-        return setTimeout(getValues, 5000)
+        return setTimeout(getValues, 1000)
     }
 
     function getValues() {

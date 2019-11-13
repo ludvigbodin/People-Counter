@@ -8,7 +8,7 @@ def get_record_from_file():
         data = json.load(json_file)
         return data
 
-def save_tracking_to_file(inOrOut, value):
+def save_tracking_to_file(inOrOut):
     record = get_record_from_file()
     today = datetime.datetime.today().strftime('%Y-%m-%d') # 2019-10-31
     hour = datetime.datetime.now().hour
