@@ -4,7 +4,6 @@ import imutils
 import cv2
 from datetime import datetime
 import json
-from data import save_tracking_to_file
 
 from person import Person
 
@@ -12,17 +11,13 @@ hog = cv2.HOGDescriptor()
 hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 cv2.startWindowThread()
 
-# the output will be written to output.avi
-out = cv2.VideoWriter('output.avi',cv2.VideoWriter_fourcc(*'MJPG'),15.,(640,480))
-
 avg = None
-video = cv2.VideoCapture("realtest.mp4")
+video = cv2.VideoCapture("single.mp4")
 video.set(cv2.CAP_PROP_FRAME_WIDTH, 1200)
 video.set(cv2.CAP_PROP_FRAME_HEIGHT, 600)
 
 inCount = 0
 outCount = 0
-save = True
 
 persons = []
 pid = 0
@@ -89,12 +84,10 @@ while 1:
             print("Human walked in")
             inCount += 1
             persons.remove(p)
-            save_tracking_to_file("in")
         elif p.get_start_cx() >= right_line and p.getCX() <= 250:
             print("Human walked out")
             outCount += 1
             persons.remove(p)
-            save_tracking_to_file("out")
     
     # Lines
     cv2.line(frame, (100, 0), (100,600), (0,255,0), 2)
@@ -113,13 +106,6 @@ while 1:
         break
     if key == ord('p'):
         cv2.waitKey(10000)
-    
-    if save:
-        data = {}
-        data["inCount"] = inCount
-        data["outCount"] = outCount
-        with open('data.txt', 'w') as outfile:
-            json.dump(data, outfile)
     
 video.release()
 cv2.destroyAllWindows()
